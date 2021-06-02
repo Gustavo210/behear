@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, SafeAreaView } from 'react-native'
 import Card from '../components/Card'
 import BarraSup from '../components/BarraSup'
+import BarraBusca from '../components/BarraBusca'
 
 
 export default function PaginaHome() {
@@ -34,40 +35,98 @@ export default function PaginaHome() {
       titulo: "Corte Masculino + Sombrancelha",
       foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     },
+    
+    {
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+    },
 
     {
-      estabelecimento: "Barbearia Do Paulo",
-      preco: 20.9,
-      titulo: "Alisamento Masculino",
-      foto: "https://images.unsplash.com/photo-1589381855733-01bb5380dedf?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YmFyYmVyJTIwbG9nb3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     },
-    
+
+    {
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+    },
+
+    {
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+    },
+
+    {
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+    },
+
+    {
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+    },
+
+    {
+      estabelecimento: "Barbearia Do Luiz",
+      preco: 29.9,
+      titulo: "Corte Masculino + Sombrancelha",
+      foto: "https://images.unsplash.com/photo-1510574843707-639843b2c406?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY4fHxiYXJiZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+    },
+
+
+
   ]
 
   return (
 
-    <View>
-      <BarraSup />
-      {lista.map((item, indice) => {
-        return (
-          <>
+    <SafeAreaView>
+      
+      <View>
+         
+          <BarraSup nome={"Gustavo"}/>
+          <BarraBusca busca={""}/>
+
+        <ScrollView style={styles.Scrow}>
+
+          {lista.map((item, indice) => {
+            return (
+
+              <Card
+                key={indice}
+                estabelecimento={item.estabelecimento}
+                preco={item.preco}
+                titulo={item.titulo}
+                foto={item.foto}
+              />  
           
-          
-          <Card
-            key={indice}
-            estabelecimento={item.estabelecimento}
-            preco={item.preco}
-            titulo={item.titulo}
-            foto={item.foto}
-          />  
+            )
 
-          </>
-        )
-
-      })}
-
-    </View>
+          })}
+        </ScrollView>
+      </View>
+      
+    </SafeAreaView>
   )
 }
 
+
+const styles = StyleSheet.create({
+
+    Scrow:{
+      marginTop: 15,
+      marginBottom: 50,
+    }
+})
 
