@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import PaginaInicialElias from '../pages/PaginaInicialElias'
 import PaginaAgendamento from '../pages/PaginaAgendamento'
+import PaginaHome from '../pages/PaginaHome'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -12,9 +13,11 @@ const Rotas: React.FC = () => {
       <Navigator screenOptions={{ headerShown: false }}>
         <Screen name="PaginaInicialElias" component={PaginaInicialElias} />
         <Screen name="PaginaAgendamento" component={PaginaAgendamento} />
+        <Screen name="PaginaHome" component={PaginaHome} />
       </Navigator>
     </NavigationContainer>
   )
 }
+
 
 export default Rotas
