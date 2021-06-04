@@ -1,94 +1,102 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { RectButton, TextInput } from 'react-native-gesture-handler'
-import DescricaoEstabelecimento from '../components/DescricaoEstabelecimento'
+import React from 'react'
+import MapView, { Marker } from 'react-native-maps';
+import { Linking, StyleSheet, Text, View } from 'react-native'
+import { RectButton, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import mapMarkerImg from '../assets/mapMarker.png'
 
 export default function PaginaFinal() {
-  const [contador, setContador] = useState(0)
 
-  function somaMaisUm() {
-    setContador(contador + 1)
-  }
+    function handleNavigateToLocalInGoogleMaps() {
+        Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${ -19.8631031 },${ -44.9890204 }`)
 
-  const lista = [
-    {
-      estabelecimento: "Barbearia São José",
-      preco: 29.9,
-      titulo: "Corte Masculino",
-      foto: "https://images.unsplash.com/photo-1519500528352-2d1460418d41?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFyYmVyJTIwc2hvcHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-    },
-    {
-      estabelecimento: "Barbearia São José",
-      preco: 29.9,
-      titulo: "Corte Masculino",
-      foto: "https://images.unsplash.com/photo-1519500528352-2d1460418d41?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFyYmVyJTIwc2hvcHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     }
+    return (
+        <View style={styles.container}>
+            <View style={styles.mapContainer}>
 
-  ]
-
-  return (
-    <View style={styles.container}>    
-    <View> 
-      {lista.map((item, indice) => {
-            return (
-
-              <DescricaoEstabelecimento
-                key={indice}
-                estabelecimento={item.estabelecimento}
-                preco={item.preco}
-                titulo={item.titulo}
-                foto={item.foto}
-              />
-
-            )
-
-          })}
-
-</View> 
-    <View>
-      <TextInput placeholder="Deixe aqui sua observação" style={styles.campoObservacao}/>
-
-      
-    
-      <RectButton onPress={somaMaisUm} style={styles.estiloDoBotao}>
-        <Text style={styles.estiloDoTextoDoBotao}>Agendar</Text>
-      </RectButton>
-      </View>
-    </View>
-  )
+                <MapView
+                    initialRegion={{
+                        latitude: -19.8631031,
+                        longitude: -44.9890204,
+                        latitudeDelta: 0.008,
+                        longitudeDelta: 0.008,
+                    }}
+                    zoomEnabled={false}
+                    pitchEnabled={false}
+                    scrollEnabled={false}
+                    rotateEnabled={false}
+                    style={styles.mapStyle}
+                >
+                    <Marker
+                        icon={mapMarkerImg}
+                        coordinate={{
+                            latitude: -19.8631031,
+                            longitude: -44.9890204
+                        }}
+                    />
+                </MapView>
+                <TouchableOpacity onPress={handleNavigateToLocalInGoogleMaps} style={styles.routesContainer}>
+                    <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
+                </TouchableOpacity>
+            </View>
+            <View>
+                <TextInput placeholder="Deixe aqui sua observação" style={styles.campoObservacao} />
+                <RectButton style={styles.estiloDoBotao}>
+                    <Text style={styles.estiloDoTextoDoBotao}>Agendar</Text>
+                </RectButton>
+            </View>
+        </View>
+    )
 }
 
-const styles = StyleSheet.create({ 
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  estiloDoBotao: {
-    
-    height: 60,
-    width: 330,
-    backgroundColor: 'blue',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-  },
-  estiloDoTextoDoBotao: {
-    color: '#f1f1f1',
-    
-  },
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+        paddingHorizontal: 20
+    },
+    routesContainer: {
+        padding: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    estiloDoBotao: {
 
-  campoObservacao: {
-    
-    marginTop: 270,
-    backgroundColor: '#EEF5FF',
-    height: 60,
-    width: 330,
-    borderRadius: 5,
-    textAlign: 'center',
-         
-  }
+        height: 60,
+        backgroundColor: 'blue',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+    },
+    routesText: {
+        color: '#0089a5'
+    },
+    estiloDoTextoDoBotao: {
+        color: '#f1f1f1',
+        fontSize: 15,
+        fontWeight: "700"
+    },
+    mapContainer: {
+        borderRadius: 5,
+        overflow: 'hidden',
+        borderWidth: 1.2,
+        borderColor: '#B3DAE2',
+        marginTop: 40,
+        backgroundColor: '#E6F7FB',
+    },
+    mapStyle: {
+        width: '100%',
+        height: 150,
+    },
+    campoObservacao: {
+
+        backgroundColor: '#EEF5FF',
+        height: 60,
+        borderRadius: 5,
+        marginVertical: 20,
+        textAlign: 'center',
+
+    }
 
 
 })

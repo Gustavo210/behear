@@ -1,23 +1,32 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import PaginaInicialElias from '../pages/PaginaInicialElias'
+
+import RouteTabs from './routeTabs'
 import PaginaAgendamento from '../pages/PaginaAgendamento'
-import PaginaHome from '../pages/PaginaHome'
+import PaginaConfiguracoes from '../pages/PaginaConfiguracoes'
+import HeaderApp from '../components/headerApp'
 
 const { Navigator, Screen } = createStackNavigator()
 
 const Rotas: React.FC = () => {
-  return (
-    <NavigationContainer>
-      <Navigator screenOptions={{ headerShown: false }}>
-        <Screen name="PaginaInicialElias" component={PaginaInicialElias} />
-        <Screen name="PaginaAgendamento" component={PaginaAgendamento} />
-        <Screen name="PaginaHome" component={PaginaHome} />
-      </Navigator>
-    </NavigationContainer>
-  )
+    return (
+        <NavigationContainer>
+            <Navigator>
+                <Screen
+                    options={{ header: props => <HeaderApp configuracoes titulo="Nome de usuário" {...props} /> }}
+                    name="RouteTabs"
+                    component={RouteTabs}
+                />
+                <Screen name="PaginaAgendamento"
+                    options={{ header: props => <HeaderApp configuracoes botaoVoltar {...props} titulo="Nome de usuário" /> }}
+                    component={PaginaAgendamento} />
+                <Screen name="PaginaConfiguracoes"
+                    options={{ header: props => <HeaderApp configuracoes={false} botaoVoltar {...props} titulo="" /> }}
+                    component={PaginaConfiguracoes} />
+            </Navigator>
+        </NavigationContainer>
+    )
 }
-
 
 export default Rotas
