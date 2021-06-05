@@ -1,8 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
+import storage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/core'
 
 export default function PaginaConfiguracoes() {
+    const [nomeStorage, setNomeStorage] = useState("")
+    const [telefoneStorage, setTelefoneStorage] = useState("")
+    const navigation = useNavigation()
+    useEffect(() => {
+        ; (async () => {
+            const user = await storage.getItem("@User")
+            if (user) {
+
+                const { nome, telefone } = JSON.parse(user)
+                setTelefoneStorage(telefone)
+                setNomeStorage(nome)
+            }
+        })()
+    }, [])
+
+    const salvaDados = async () => {
+        if (!nomeStorage) {
+            alert("Preencha o nome")
+            return
+        }
+        if (!telefoneStorage) {
+            alert("Preencha o telefone")
+            return
+        }
+        await storage.setItem("@User", JSON.stringify({ nome: nomeStorage, telefone: telefoneStorage }))
+        navigation.goBack()
+    }
 
     return (
         <View style={styles.container}>
@@ -12,13 +41,13 @@ export default function PaginaConfiguracoes() {
             </View>
             <View style={styles.containerInput}>
                 <Text style={styles.label}>Nome</Text>
-                <TextInput placeholder="Nome" style={styles.input} />
+                <TextInput placeholder="Nome" onChangeText={text => setNomeStorage(text)} value={nomeStorage} style={styles.input} />
             </View>
             <View style={styles.containerInput}>
                 <Text style={styles.label}>Telefone</Text>
-                <TextInput placeholder="Telefone" style={styles.input} />
+                <TextInput placeholder="Telefone" onChangeText={text => setTelefoneStorage(text)} value={telefoneStorage} style={styles.input} />
             </View>
-            <RectButton style={styles.botaoSalvar}>
+            <RectButton style={styles.botaoSalvar} onPress={salvaDados}>
                 <Text style={styles.textoDoBotao}>Salvar</Text>
             </RectButton>
         </View>

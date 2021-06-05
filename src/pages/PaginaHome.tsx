@@ -5,7 +5,7 @@ import Card from '../components/Card'
 export default function PaginaHome() {
     const lista = [
         {
-            estabelecimento: 'Barbearia São José',
+            estabelecimento: 'Barbearia São José1',
             preco: 29.9,
             titulo: 'Corte Masculino',
             foto:
@@ -14,7 +14,7 @@ export default function PaginaHome() {
             longitude: -44.9890204,
         },
         {
-            estabelecimento: 'Barbearia São José',
+            estabelecimento: 'Barbearia São José2',
             preco: 29.9,
             titulo: 'Corte Masculino',
             foto:
@@ -23,7 +23,7 @@ export default function PaginaHome() {
             longitude: -44.9890204,
         },
         {
-            estabelecimento: 'Barbearia São José',
+            estabelecimento: 'Barbearia São José3',
             preco: 29.9,
             titulo: 'Corte Masculino',
             foto:
@@ -32,7 +32,7 @@ export default function PaginaHome() {
             longitude: -44.9890204,
         },
         {
-            estabelecimento: 'Barbearia São José',
+            estabelecimento: 'Barbearia São José4',
             preco: 29.9,
             titulo: 'Corte Masculino',
             foto:

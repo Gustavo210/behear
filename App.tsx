@@ -1,12 +1,13 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
-import Rotas from './src/routes/Rotas'
+import { UserProvider } from './src/context/UserContext'
+import Rotas from './src/routes'
 
 export default function App() {
-  return (
-    <>
-      <Rotas />
-      <StatusBar barStyle="light-content" backgroundColor="#0A3473" />
-    </>
-  )
+    return (
+        <UserProvider>
+            <Rotas />
+            <StatusBar barStyle="light-content" backgroundColor="#0A3473" />
+        </UserProvider>
+    )
 }
