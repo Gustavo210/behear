@@ -97,7 +97,11 @@ export default function PaginaHome() {
         <FlatList
             data={lista}
             ListHeaderComponent={() => {
-                return <Text>Histórico de agendamentos</Text>
+                return <Text style={{
+                    fontSize: 25,
+                    fontWeight: "600",
+                    marginHorizontal: 20, marginTop: 20
+                }}>📅 Histórico de agendamentos</Text>
             }}
             keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => <Card {...item.item} />}
