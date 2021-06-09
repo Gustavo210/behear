@@ -20,6 +20,8 @@
       "supportsTablet": true
     },
     "android": {
+        "package": "app.vercel.behair",
+        "versionCode": 1
     },
     "web": {
       "favicon": "./assets/logoFavicon.png"
