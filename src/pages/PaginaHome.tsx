@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FlatList, Text } from 'react-native'
 import Card from '../components/Card'
 import api from '../services/api'
 import { PropsItem } from '../contract'
+import { useFocusEffect } from '@react-navigation/core'
 export default function PaginaHome() {
     const [lista, setLista] = useState<PropsItem[]>([])
 
-    useEffect(() => {
+    useFocusEffect(() => {
         buscaDados()
-    }, [])
+    })
 
     const buscaDados = async () => {
         const response = await api.get("products/all")
-        console.log("response", response.data)
         if (response.status === 200) {
             setLista(response.data)
         }

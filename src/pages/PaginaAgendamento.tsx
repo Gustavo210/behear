@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import MapView, { Marker } from 'react-native-maps';
-import { Image, Linking, StyleSheet, Text, View, Button, Platform, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
+import { Image, Linking, StyleSheet, Text, View, Button, Platform, KeyboardAvoidingView, ActivityIndicator, ScrollView } from 'react-native'
 import { RectButton, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { format } from 'date-fns'
 import storage from '@react-native-async-storage/async-storage'
@@ -84,81 +84,85 @@ export default function PaginaFinal() {
                 onChange={onChange}
             />
         )}
-        <View style={styles.container}>
-            <KeyboardAvoidingView behavior="position">
+        <ScrollView >
 
 
-                <View style={styles.detalhesDoItem}>
-                    <Image resizeMode="cover" source={{ uri: photo }} style={styles.imagem} />
-                    <View style={styles.detalhesTexto}>
-                        <Text style={[styles.texto, styles.titulo]}>{name}</Text>
-                        <Text style={styles.texto}>{establishment}</Text>
-                        <Text style={[styles.texto, styles.preco]}>R$ {cost?.toFixed(2).toString().replace(".", ",")}</Text>
+            <View style={styles.container}>
+                <KeyboardAvoidingView behavior="position">
+
+
+                    <View style={styles.detalhesDoItem}>
+                        <Image resizeMode="cover" source={{ uri: photo }} style={styles.imagem} />
+                        <View style={styles.detalhesTexto}>
+                            <Text style={[styles.texto, styles.titulo]}>{name}</Text>
+                            <Text style={styles.texto}>{establishment}</Text>
+                            <Text style={[styles.texto, styles.preco]}>R$ {cost?.toFixed(2).toString().replace(".", ",")}</Text>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.containerDescricao}>
-                    <Text style={styles.tituloDescricao}>Descrição </Text>
-                    <Text style={styles.descricao}>{description}</Text>
-                </View>
-                <View style={styles.mapContainer}>
-                    <MapView
-                        initialRegion={{
-                            latitude: Number(latitude),
-                            longitude: Number(longitude),
-                            latitudeDelta: 0.008,
-                            longitudeDelta: 0.008,
-                        }}
-                        zoomEnabled={false}
-                        pitchEnabled={false}
-                        scrollEnabled={false}
-                        rotateEnabled={false}
-                        style={styles.mapStyle}
-                    >
-                        <Marker icon={mapMarkerImg} coordinate={{ latitude: Number(latitude), longitude: Number(longitude) }} />
-                    </MapView>
-                    <TouchableOpacity onPress={handleNavigateToLocalInGoogleMaps} style={styles.routesContainer}>
-                        <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.containerData}>
-                    <View>
-                        <TouchableOpacity style={styles.botaoMudaData} activeOpacity={1} onPress={() => showMode('date')}>
-                            <FeatherIcon name="calendar" style={styles.iconeTextoBotaoData} />
-                            <Text style={styles.textoBotaoData}>
-                                {format(new Date(date), "d", { locale: ptBr })}
-                                {" "}de{" "}
-                                {format(new Date(date), "MMMM", { locale: ptBr })}
-                                {" "}de{" "}
-                                {format(new Date(date), "u", { locale: ptBr })}
-                            </Text>
+                    <View style={styles.containerDescricao}>
+                        <Text style={styles.tituloDescricao}>Descrição </Text>
+                        <Text style={styles.descricao}>{description}</Text>
+                    </View>
+                    <View style={styles.mapContainer}>
+                        <MapView
+                            initialRegion={{
+                                latitude: Number(latitude),
+                                longitude: Number(longitude),
+                                latitudeDelta: 0.008,
+                                longitudeDelta: 0.008,
+                            }}
+                            zoomEnabled={false}
+                            pitchEnabled={false}
+                            scrollEnabled={false}
+                            rotateEnabled={false}
+                            style={styles.mapStyle}
+                        >
+                            <Marker icon={mapMarkerImg} coordinate={{ latitude: Number(latitude), longitude: Number(longitude) }} />
+                        </MapView>
+                        <TouchableOpacity onPress={handleNavigateToLocalInGoogleMaps} style={styles.routesContainer}>
+                            <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
                         </TouchableOpacity>
-                        <Text style={styles.labelSmall}>Mudar data</Text>
+                    </View>
+                    <View style={styles.containerData}>
+                        <View>
+                            <TouchableOpacity style={styles.botaoMudaData} activeOpacity={1} onPress={() => showMode('date')}>
+                                <FeatherIcon name="calendar" style={styles.iconeTextoBotaoData} />
+                                <Text style={styles.textoBotaoData}>
+                                    {format(new Date(date), "d", { locale: ptBr })}
+                                    {" "}de{" "}
+                                    {format(new Date(date), "MMMM", { locale: ptBr })}
+                                    {" "}de{" "}
+                                    {format(new Date(date), "u", { locale: ptBr })}
+                                </Text>
+                            </TouchableOpacity>
+                            <Text style={styles.labelSmall}>Mudar data</Text>
+                        </View>
+                        <View>
+
+                            <TouchableOpacity style={styles.botaoMudaData} activeOpacity={1} onPress={() => showMode('time')}>
+                                <FeatherIcon name="clock" style={styles.iconeTextoBotaoData} />
+                                <Text style={styles.textoBotaoData}>
+                                    {format(new Date(date), "HH:mm", { locale: ptBr })}
+                                </Text>
+                            </TouchableOpacity>
+                            <Text style={styles.labelSmall}>Mudar horário</Text>
+                        </View>
                     </View>
                     <View>
+                        <TextInput value={observacao} onChangeText={text => setObservacao(text)} placeholder="Deixe aqui sua observação" style={styles.campoObservacao} />
+                        <RectButton style={styles.estiloDoBotao} onPress={agendaProduto}>
+                            {loading ? (
+                                <ActivityIndicator color="#FFF" />
 
-                        <TouchableOpacity style={styles.botaoMudaData} activeOpacity={1} onPress={() => showMode('time')}>
-                            <FeatherIcon name="clock" style={styles.iconeTextoBotaoData} />
-                            <Text style={styles.textoBotaoData}>
-                                {format(new Date(date), "HH:mm", { locale: ptBr })}
-                            </Text>
-                        </TouchableOpacity>
-                        <Text style={styles.labelSmall}>Mudar horário</Text>
+                            ) : (
+
+                                <Text style={styles.estiloDoTextoDoBotao}>Agendar</Text>
+                            )}
+                        </RectButton>
                     </View>
-                </View>
-                <View>
-                    <TextInput value={observacao} onChangeText={text => setObservacao(text)} placeholder="Deixe aqui sua observação" style={styles.campoObservacao} />
-                    <RectButton style={styles.estiloDoBotao} onPress={agendaProduto}>
-                        {loading ? (
-                            <ActivityIndicator color="#FFF" />
-
-                        ) : (
-
-                            <Text style={styles.estiloDoTextoDoBotao}>Agendar</Text>
-                        )}
-                    </RectButton>
-                </View>
-            </KeyboardAvoidingView>
-        </View >
+                </KeyboardAvoidingView>
+            </View >
+        </ScrollView>
     </>
     )
 }
@@ -224,6 +228,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,
+        marginBottom: 10
     },
     detalhesDoItem: {
         flexDirection: "row",
