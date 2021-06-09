@@ -1,21 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, Text } from 'react-native'
 import Card from '../components/Card'
-
+import api from '../services/api'
+import { PropsItem } from '../contract'
 export default function PaginaHome() {
-    const lista = [
-        {
-            estabelecimento: 'Barbearia São José1',
-            preco: 29.9,
-            titulo: 'Corte Masculino',
-            descricao: "Este é um teste de escrita de descrição, espero que tudo funcione corretamente",
-            foto:
-                'https://images.unsplash.com/photo-1519500528352-2d1460418d41?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFyYmVyJTIwc2hvcHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-            latitude: -19.8631031,
-            longitude: -44.9890204,
-        },
-    ]
+    const [lista, setLista] = useState<PropsItem[]>([])
 
+    useEffect(() => {
+        buscaDados()
+    }, [])
+
+    const buscaDados = async () => {
+        const response = await api.get("products/all")
+        console.log("response", response.data)
+        if (response.status === 200) {
+            setLista(response.data)
+        }
+    }
     return (
         <FlatList
             data={lista}

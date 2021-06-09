@@ -3,6 +3,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { Image, Linking, StyleSheet, Text, View, Button, Platform, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import { RectButton, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { format } from 'date-fns'
+import storage from '@react-native-async-storage/async-storage'
 import ptBr from 'date-fns/locale/pt-BR'
 import FeatherIcon from '@expo/vector-icons/Feather'
 
@@ -10,8 +11,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 import mapMarkerImg from '../assets/mapMarker.png'
-import { useRoute } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { PropsItem } from '../contract';
+import api from '../services/api';
 
 type TypeDate = "date" | "time"
 
@@ -21,6 +23,8 @@ export default function PaginaFinal() {
     const [mode, setMode] = useState<TypeDate>('date');
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [observacao, setObservacao] = useState("");
+    const navigation = useNavigation()
 
     const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
@@ -35,24 +39,38 @@ export default function PaginaFinal() {
 
 
     const route = useRoute()
-    const { estabelecimento, latitude, longitude, preco, titulo, foto, descricao } = route.params as PropsItem
+    const { establishment, latitude, longitude, cost, name, photo, description, id } = route.params as PropsItem
 
     function handleNavigateToLocalInGoogleMaps() {
         Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${ latitude },${ longitude }`)
 
     }
 
-    const delay = async () => {
-        return new Promise(function (resolve, reject) {
-            setTimeout(resolve, 2000);
-        })
-    }
     async function agendaProduto() {
         if (loading) {
             return
         }
         setLoading(true)
-        await delay()
+        const user = await storage.getItem("@User")
+        if (!user) {
+            alert("erro ao cadastrar.")
+            return
+        }
+        const { nome, telefone } = JSON.parse(user)
+
+        const data = {
+            name: nome,
+            phone: telefone,
+            note: observacao,
+            created_at: date,
+            id_product: id
+        }
+
+        const response = await api.post("reservations", data)
+        if (response.status === 201) {
+            alert(`Uma reserva foi criada`)
+            navigation.goBack()
+        }
         setLoading(false)
     }
     return (<>
@@ -71,23 +89,22 @@ export default function PaginaFinal() {
 
 
                 <View style={styles.detalhesDoItem}>
-                    <Image resizeMode="cover" source={{ uri: foto }} style={styles.imagem} />
+                    <Image resizeMode="cover" source={{ uri: photo }} style={styles.imagem} />
                     <View style={styles.detalhesTexto}>
-                        <Text style={[styles.texto, styles.titulo]}>{titulo}</Text>
-                        <Text style={styles.texto}>{estabelecimento}</Text>
-                        <Text style={[styles.texto, styles.preco]}>R$ {preco.toFixed(2).toString().replace(".", ",")}</Text>
+                        <Text style={[styles.texto, styles.titulo]}>{name}</Text>
+                        <Text style={styles.texto}>{establishment}</Text>
+                        <Text style={[styles.texto, styles.preco]}>R$ {cost?.toFixed(2).toString().replace(".", ",")}</Text>
                     </View>
                 </View>
                 <View style={styles.containerDescricao}>
                     <Text style={styles.tituloDescricao}>Descrição </Text>
-                    <Text style={styles.descricao}>{descricao}</Text>
+                    <Text style={styles.descricao}>{description}</Text>
                 </View>
                 <View style={styles.mapContainer}>
-
                     <MapView
                         initialRegion={{
-                            latitude,
-                            longitude,
+                            latitude: Number(latitude),
+                            longitude: Number(longitude),
                             latitudeDelta: 0.008,
                             longitudeDelta: 0.008,
                         }}
@@ -97,7 +114,7 @@ export default function PaginaFinal() {
                         rotateEnabled={false}
                         style={styles.mapStyle}
                     >
-                        <Marker icon={mapMarkerImg} coordinate={{ latitude, longitude }} />
+                        <Marker icon={mapMarkerImg} coordinate={{ latitude: Number(latitude), longitude: Number(longitude) }} />
                     </MapView>
                     <TouchableOpacity onPress={handleNavigateToLocalInGoogleMaps} style={styles.routesContainer}>
                         <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
@@ -129,7 +146,7 @@ export default function PaginaFinal() {
                     </View>
                 </View>
                 <View>
-                    <TextInput placeholder="Deixe aqui sua observação" style={styles.campoObservacao} />
+                    <TextInput value={observacao} onChangeText={text => setObservacao(text)} placeholder="Deixe aqui sua observação" style={styles.campoObservacao} />
                     <RectButton style={styles.estiloDoBotao} onPress={agendaProduto}>
                         {loading ? (
                             <ActivityIndicator color="#FFF" />

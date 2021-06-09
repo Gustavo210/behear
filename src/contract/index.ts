@@ -1,16 +1,19 @@
 export interface PropsItem {
-    foto?: string
-    titulo: string
-    estabelecimento: string
-    preco: Number
-    descricao?: string
+    id: string
+    photo?: string
+    name: string
+    establishment: string
+    cost: Number
+    description?: string
     latitude: number
     longitude: number
+    data?: Date
 }
 export interface PropsItemAgendado {
-    foto?: string
-    titulo: string
-    estabelecimento: string
+    id: string
+    photo?: string
+    name: string
+    establishment: string
     data?: Date
 }
 

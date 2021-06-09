@@ -3,6 +3,8 @@ import React from 'react'
 import { View, Image, Text, StyleSheet } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import { PropsCard } from '../../contract'
+import ptBr from 'date-fns/locale/pt-BR'
+import { format } from 'date-fns'
 
 
 const Card: React.FC<PropsCard> = (props) => {
@@ -14,15 +16,15 @@ const Card: React.FC<PropsCard> = (props) => {
 
     return (
         <View style={styles.view1}>
-            <Image style={styles.logo} source={{ uri: props.foto }} />
+            <Image style={styles.logo} source={{ uri: props.photo }} />
             {props.agendar ? (
                 <>
                     <View style={styles.detalhes}>
-                        <Text style={styles.texto}> {props.titulo}</Text>
+                        <Text style={styles.texto}> {props.name}</Text>
                         <Text style={styles.texto}>
-                            R$ {props.preco.toFixed(2).toString().replace('.', ',')}
+                            R$ {props.cost?.toFixed(2).toString().replace('.', ',')}
                         </Text>
-                        <Text style={styles.texto}> {props.estabelecimento}</Text>
+                        <Text style={styles.texto}> {props.establishment}</Text>
                     </View>
                     <RectButton style={styles.button1}>
                         <Text style={styles.buttonText} onPress={navegaPaginaBusca}>Agendar</Text>
@@ -30,9 +32,15 @@ const Card: React.FC<PropsCard> = (props) => {
                 </>
             ) : (
                 <View style={styles.detalhes}>
-                    <Text style={styles.texto}> {props.titulo}</Text>
-                    <Text style={styles.texto}> {props.estabelecimento}</Text>
-                    <Text style={styles.texto}> {props.data}</Text>
+                    <Text style={styles.texto}> {props.name}</Text>
+                    <Text style={styles.texto}> {props.establishment}</Text>
+                    <Text style={styles.texto}> {props.data && (
+                        <>
+                            {format(new Date(props.data), "dd MMMM y", { locale: ptBr })}
+                            {" "}as{" "}
+                            {format(new Date(props.data), "HH mm", { locale: ptBr })}
+                        </>
+                    )}</Text>
                 </View>
             )}
         </View>
